@@ -1,15 +1,26 @@
-import withPWA from "next-pwa";
+import withPWAInit from "next-pwa";
 
-const config = withPWA({
+const isProd = process.env.NODE_ENV === "production";
+const repoName = "guitar-tuning";
+
+const withPWA = withPWAInit({
   dest: "public",
   register: true,
   skipWaiting: true,
-  disable: process.env.NODE_ENV === "development", // ปิด PWA ตอน dev เพื่อไม่ให้ cache กวน
-  reactStrictMode: true,
-  // บังคับใช้ webpack แทน turbopack
-  webpack: (config) => {
-    return config;
-  },
+  disable: !isProd,
 });
 
-export default config;
+const nextConfig = {
+  reactStrictMode: true,
+  output: "export",
+  basePath: isProd ? `/${repoName}` : "",
+  assetPrefix: isProd ? `/${repoName}/` : "",
+  images: {
+    unoptimized: true,
+  },
+  webpack(config) {
+    return config;
+  },
+};
+
+export default withPWA(nextConfig);

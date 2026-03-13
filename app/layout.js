@@ -11,7 +11,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// app/layout.js หรือ app/layout.tsx
 export const metadata = {
   title: {
     default: "Guitar tuner | ตั้งสายกีต้า",
@@ -23,19 +22,19 @@ export const metadata = {
     "ตั้งสายกีต้า",
     "tuner online",
     "ไม่มีโฆษณา",
-    "PWA guitar tuner"
+    "PWA guitar tuner",
   ],
-  manifest: "/manifest.json",
-  themeColor: "#000000",
+  manifest: "/guitar-tuning/manifest.json",
 };
 
+export const viewport = {
+  themeColor: "#0f172a",
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="th">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>
