@@ -1,2 +1,0 @@
-:HL["/guitar-tuning/_next/static/css/6eb8f6ef8ba549d6.css","style"]
-0:{"buildId":"Jwt9-49Sv_Q2S9ukUOejW","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"eq","paramType":null,"paramKey":"eq","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
