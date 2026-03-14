@@ -1,5 +1,5 @@
 1:"$Sreact.fragment"
 2:I[7121,[],""]
 3:I[4581,[],""]
-:HL["/guitar-tuning/_next/static/css/88a52b4a95fe1d55.css","style"]
-0:{"buildId":"WouRoAHM3JXhkAJa0mS90","rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/guitar-tuning/_next/static/css/88a52b4a95fe1d55.css","precedence":"next"}]],["$","html",null,{"lang":"th","children":["$","body",null,{"className":"__variable_397002 __variable_6a2fb1 antialiased","children":["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]}]}]]}],"loading":null,"isPartial":false}
+:HL["/guitar-tuning/_next/static/css/7cbe8c403beddc5c.css","style"]
+0:{"buildId":"biXUUpI6efX1RR5tG2S3p","rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/guitar-tuning/_next/static/css/7cbe8c403beddc5c.css","precedence":"next"}]],["$","html",null,{"lang":"th","children":["$","body",null,{"className":"__variable_397002 __variable_6a2fb1 antialiased","children":["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]}]}]]}],"loading":null,"isPartial":false}
