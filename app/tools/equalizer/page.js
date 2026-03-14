@@ -3,9 +3,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const EQ_BANDS = [
-  20, 25, 31.5, 40, 50, 63, 80, 100, 125, 160,
-  200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600,
-  2000, 2500, 3150, 4000, 5000, 6300, 8000, 10000, 12500, 16000, 20000,
+  20, 25, 31.5, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630,
+  800, 1000, 1250, 1600, 2000, 2500, 3150, 4000, 5000, 6300, 8000, 10000,
+  12500, 16000, 20000,
 ];
 
 const STORAGE_KEY = "mic-eq-31-band-values-v2";
@@ -44,7 +44,8 @@ function getBandEdges(freqs) {
     const next = freqs[i + 1] ?? freq * 1.25;
 
     const low = i === 0 ? Math.max(10, freq / 1.25) : Math.sqrt(prev * freq);
-    const high = i === freqs.length - 1 ? freq * 1.25 : Math.sqrt(freq * next);
+    const high =
+      i === freqs.length - 1 ? freq * 1.25 : Math.sqrt(freq * next);
 
     return {
       center: freq,
@@ -54,7 +55,12 @@ function getBandEdges(freqs) {
   });
 }
 
-function getAverageByteLevelInRange({ dataArray, sampleRate, lowFreq, highFreq }) {
+function getAverageByteLevelInRange({
+  dataArray,
+  sampleRate,
+  lowFreq,
+  highFreq,
+}) {
   const nyquist = sampleRate / 2;
   const binCount = dataArray.length;
 
@@ -179,9 +185,7 @@ export default function EqualizerMicPage() {
         if (screen.orientation?.lock) {
           await screen.orientation.lock("landscape");
         }
-      } catch {
-        // บาง browser / iPhone จะไม่อนุญาต
-      }
+      } catch {}
     };
 
     tryLockLandscape();
@@ -400,7 +404,11 @@ export default function EqualizerMicPage() {
         i === index
           ? {
               ...item,
-              gain: clamp(Number((item.gain + delta).toFixed(1)), MIN_DB, MAX_DB),
+              gain: clamp(
+                Number((item.gain + delta).toFixed(1)),
+                MIN_DB,
+                MAX_DB,
+              ),
             }
           : item,
       ),
@@ -482,17 +490,23 @@ export default function EqualizerMicPage() {
     }
   };
 
-  const vuPixelHeight = 240;
-  const eqPositivePixelHeight = 120;
+  const vuPixelHeight = 220;
+  const eqPositivePixelHeight = 110;
+
+  const BAND_WIDTH = 34;
+  const BAND_GAP = 2;
+  const BAND_TOTAL_WIDTH =
+    EQ_BANDS.length * BAND_WIDTH + (EQ_BANDS.length - 1) * BAND_GAP;
 
   return (
-    <div className="w-full h-screen overflow-hidden bg-slate-950 text-white">
+    <div className="h-screen w-full overflow-hidden bg-slate-950 text-white">
       {!isLandscape && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/95 p-6 text-center">
           <div className="max-w-md rounded-3xl border border-slate-700 bg-slate-900 p-6">
             <div className="text-2xl font-bold">กรุณาหมุนหน้าจอเป็นแนวนอน</div>
             <div className="mt-3 text-sm text-slate-300">
-              หน้านี้ออกแบบให้ใช้งานแบบ landscape เพื่อให้เห็น VU Meter และ EQ ครบ 31 band ชัดเจน
+              หน้านี้ออกแบบให้ใช้งานแบบ landscape เพื่อให้เห็น VU Meter และ EQ ครบ
+              31 band ชัดเจน
             </div>
           </div>
         </div>
@@ -543,7 +557,9 @@ export default function EqualizerMicPage() {
                   <div className="text-[11px] uppercase tracking-wider text-slate-500">
                     Permission
                   </div>
-                  <div className="mt-1 text-sm font-semibold">{permissionState}</div>
+                  <div className="mt-1 text-sm font-semibold">
+                    {permissionState}
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-3">
@@ -559,7 +575,9 @@ export default function EqualizerMicPage() {
                   <div className="text-[11px] uppercase tracking-wider text-slate-500">
                     Preset
                   </div>
-                  <div className="mt-1 text-sm font-semibold">{selectedPreset}</div>
+                  <div className="mt-1 text-sm font-semibold">
+                    {selectedPreset}
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-3">
@@ -609,7 +627,9 @@ export default function EqualizerMicPage() {
                     onChange={(e) => setInputGain(Number(e.target.value))}
                     className="touch-slider w-full"
                   />
-                  <div className="mt-2 text-sm text-slate-300">{inputGain.toFixed(2)}x</div>
+                  <div className="mt-2 text-sm text-slate-300">
+                    {inputGain.toFixed(2)}x
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-3">
@@ -623,10 +643,14 @@ export default function EqualizerMicPage() {
                       max="40"
                       step="1"
                       value={masterThreshold}
-                      onChange={(e) => setMasterThreshold(Number(e.target.value))}
+                      onChange={(e) =>
+                        setMasterThreshold(Number(e.target.value))
+                      }
                       className="touch-slider w-full"
                     />
-                    <div className="text-sm text-slate-300">Threshold: {masterThreshold}</div>
+                    <div className="text-sm text-slate-300">
+                      Threshold: {masterThreshold}
+                    </div>
 
                     <input
                       type="range"
@@ -634,7 +658,9 @@ export default function EqualizerMicPage() {
                       max="2"
                       step="0.05"
                       value={masterSensitivity}
-                      onChange={(e) => setMasterSensitivity(Number(e.target.value))}
+                      onChange={(e) =>
+                        setMasterSensitivity(Number(e.target.value))
+                      }
                       className="touch-slider w-full"
                     />
                     <div className="text-sm text-slate-300">
@@ -667,7 +693,9 @@ export default function EqualizerMicPage() {
                       max="2"
                       step="0.05"
                       value={bandSensitivity}
-                      onChange={(e) => setBandSensitivity(Number(e.target.value))}
+                      onChange={(e) =>
+                        setBandSensitivity(Number(e.target.value))
+                      }
                       className="touch-slider w-full"
                     />
                     <div className="text-sm text-slate-300">
@@ -683,7 +711,9 @@ export default function EqualizerMicPage() {
                       onChange={(e) => setBandNoiseFloor(Number(e.target.value))}
                       className="touch-slider w-full"
                     />
-                    <div className="text-sm text-slate-300">Noise Floor: {bandNoiseFloor}</div>
+                    <div className="text-sm text-slate-300">
+                      Noise Floor: {bandNoiseFloor}
+                    </div>
 
                     <input
                       type="range"
@@ -711,15 +741,18 @@ export default function EqualizerMicPage() {
         </div>
 
         <div className="min-h-0 flex-1 overflow-hidden bg-slate-950">
-          <div className="grid h-full grid-rows-[1fr_1fr] gap-3 p-3">
-            <section className="min-h-0 rounded-3xl border border-slate-800 bg-slate-900 p-3">
-              <div className="mb-3 flex items-center justify-between">
+          <div className="grid h-full grid-rows-[1fr_1fr] gap-3 p-2 sm:p-3">
+            <section className="min-h-0 rounded-3xl border border-slate-800 bg-slate-900 p-2 sm:p-3">
+              <div className="mb-2 flex items-center justify-between sm:mb-3">
                 <h2 className="text-base font-bold sm:text-lg">VU Meter</h2>
                 <div className="text-xs text-slate-400">ครบ 31 band</div>
               </div>
 
-              <div className="h-[calc(100%-2rem)] overflow-x-auto overflow-y-hidden rounded-2xl border border-slate-800 bg-slate-950/50 p-2">
-                <div className="flex h-full min-w-[1705px] items-end gap-1.5 touch-pan-x">
+              <div className="h-[calc(100%-2rem)] overflow-x-auto overflow-y-hidden rounded-2xl border border-slate-800 bg-slate-950/50 p-1.5 sm:p-2">
+                <div
+                  className="flex h-full items-end touch-pan-x"
+                  style={{ width: `${BAND_TOTAL_WIDTH}px`, gap: `${BAND_GAP}px` }}
+                >
                   {vuBands.map((band) => {
                     const height = band.level * vuPixelHeight;
                     const peakBottom = Math.max(0, band.peak * vuPixelHeight - 2);
@@ -727,29 +760,30 @@ export default function EqualizerMicPage() {
                     return (
                       <div
                         key={`vu-${band.freq}`}
-                        className="flex h-full w-[53px] shrink-0 flex-col items-center"
+                        className="flex h-full shrink-0 flex-col items-center"
+                        style={{ width: `${BAND_WIDTH}px` }}
                       >
-                        <div className="mb-1 h-8 text-center text-[10px] font-medium leading-tight text-slate-300">
+                        <div className="mb-1 h-7 text-center text-[9px] font-medium leading-tight text-slate-300 sm:h-8 sm:text-[10px]">
                           {band.db > -99 ? `${band.db.toFixed(0)} dB` : "-∞"}
                         </div>
 
-                        <div className="relative flex flex-1 w-full items-end justify-center overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
+                        <div className="relative flex w-full flex-1 items-end justify-center overflow-hidden rounded-lg border border-slate-800 bg-slate-900 sm:rounded-xl">
                           <div className="absolute inset-x-0 bottom-[25%] border-t border-dashed border-slate-700" />
                           <div className="absolute inset-x-0 bottom-[50%] border-t border-dashed border-slate-700" />
                           <div className="absolute inset-x-0 bottom-[75%] border-t border-dashed border-slate-700" />
 
                           <div
-                            className="absolute bottom-0 w-8 rounded-t-md bg-emerald-400 transition-all duration-75"
-                            style={{ height: `${height}px` }}
+                            className="absolute bottom-0 rounded-t-md bg-emerald-400 transition-all duration-75"
+                            style={{ height: `${height}px`, width: "18px" }}
                           />
 
                           <div
-                            className="absolute w-9 border-t-2 border-amber-300"
-                            style={{ bottom: `${peakBottom}px` }}
+                            className="absolute border-t-2 border-amber-300"
+                            style={{ bottom: `${peakBottom}px`, width: "20px" }}
                           />
                         </div>
 
-                        <div className="mt-1 text-center text-[10px] font-semibold text-slate-200">
+                        <div className="mt-1 text-center text-[9px] font-semibold text-slate-200 sm:text-[10px]">
                           {formatFreq(band.freq)}
                         </div>
                       </div>
@@ -759,18 +793,25 @@ export default function EqualizerMicPage() {
               </div>
             </section>
 
-            <section className="min-h-0 rounded-3xl border border-slate-800 bg-slate-900 p-3">
-              <div className="mb-3 flex items-center justify-between">
-                <h2 className="text-base font-bold sm:text-lg">31 Band Equalizer</h2>
+            <section className="min-h-0 rounded-3xl border border-slate-800 bg-slate-900 p-2 sm:p-3">
+              <div className="mb-2 flex items-center justify-between sm:mb-3">
+                <h2 className="text-base font-bold sm:text-lg">
+                  31 Band Equalizer
+                </h2>
                 <div className="text-xs text-slate-400">รองรับทัชสกรีน</div>
               </div>
 
-              <div className="h-[calc(100%-2rem)] overflow-x-auto overflow-y-hidden rounded-2xl border border-slate-800 bg-slate-950/50 p-2">
-                <div className="flex h-full min-w-[1705px] items-end gap-1.5 touch-pan-x">
+              <div className="h-[calc(100%-2rem)] overflow-x-auto overflow-y-hidden rounded-2xl border border-slate-800 bg-slate-950/50 p-1.5 sm:p-2">
+                <div
+                  className="flex h-full items-end touch-pan-x"
+                  style={{ width: `${BAND_TOTAL_WIDTH}px`, gap: `${BAND_GAP}px` }}
+                >
                   {eqBands.map((band, index) => {
                     const gain = Number(band.gain || 0);
                     const positiveHeight =
-                      gain > 0 ? `${(gain / MAX_DB) * eqPositivePixelHeight}px` : "0px";
+                      gain > 0
+                        ? `${(gain / MAX_DB) * eqPositivePixelHeight}px`
+                        : "0px";
                     const negativeHeight =
                       gain < 0
                         ? `${(Math.abs(gain) / Math.abs(MIN_DB)) * eqPositivePixelHeight}px`
@@ -779,49 +820,50 @@ export default function EqualizerMicPage() {
                     return (
                       <div
                         key={`eq-${band.freq}`}
-                        className="flex h-full w-[53px] shrink-0 flex-col items-center"
+                        className="flex h-full shrink-0 flex-col items-center"
+                        style={{ width: `${BAND_WIDTH}px` }}
                       >
-                        <div className="mb-1 text-[10px] font-semibold text-slate-300">
+                        <div className="mb-1 text-[9px] font-semibold text-slate-300 sm:text-[10px]">
                           {gain > 0 ? `+${gain}` : gain}
                         </div>
 
-<div className="relative flex flex-1 w-full items-center justify-center overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
-  <div className="absolute left-0 right-0 top-1/2 h-px bg-slate-600" />
+                        <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden rounded-lg border border-slate-800 bg-slate-900 sm:rounded-xl">
+                          <div className="absolute left-0 right-0 top-1/2 h-px bg-slate-600" />
 
-  <div
-    className="absolute bottom-1/2 w-7 rounded-t-md bg-cyan-400/85"
-    style={{ height: positiveHeight }}
-  />
-  <div
-    className="absolute top-1/2 w-7 rounded-b-md bg-fuchsia-400/85"
-    style={{ height: negativeHeight }}
-  />
+                          <div
+                            className="absolute bottom-1/2 rounded-t-md bg-cyan-400/85"
+                            style={{ height: positiveHeight, width: "14px" }}
+                          />
+                          <div
+                            className="absolute top-1/2 rounded-b-md bg-fuchsia-400/85"
+                            style={{ height: negativeHeight, width: "14px" }}
+                          />
 
-  {/* รางตรงกลาง */}
-  <div className="absolute inset-y-2 left-1/2 w-[6px] -translate-x-1/2 rounded-full bg-slate-700" />
+                          <div className="absolute inset-y-2 left-1/2 w-[4px] -translate-x-1/2 rounded-full bg-slate-700" />
 
-  {/* slider */}
-  <div className="absolute inset-y-1 left-1/2 flex -translate-x-1/2 items-center justify-center">
-    <input
-      type="range"
-      min={MIN_DB}
-      max={MAX_DB}
-      step={0.5}
-      value={gain}
-      onChange={(e) => updateEqBand(index, e.target.value)}
-      className="eq-slider-vertical"
-    />
-  </div>
-</div>
+                          <div className="absolute inset-y-1 left-1/2 flex -translate-x-1/2 items-center justify-center">
+                            <input
+                              type="range"
+                              min={MIN_DB}
+                              max={MAX_DB}
+                              step={0.5}
+                              value={gain}
+                              onChange={(e) =>
+                                updateEqBand(index, e.target.value)
+                              }
+                              className="eq-slider-vertical"
+                            />
+                          </div>
+                        </div>
 
-                        <div className="mt-1 text-center text-[10px] font-semibold text-slate-200">
+                        <div className="mt-1 text-center text-[9px] font-semibold text-slate-200 sm:text-[10px]">
                           {formatFreq(band.freq)}
                         </div>
 
-                        <div className="mt-1 flex w-full items-center gap-1">
+                        <div className="mt-1 flex w-full items-center gap-0.5 sm:gap-1">
                           <button
                             onClick={() => stepEqBand(index, -0.5)}
-                            className="flex-1 rounded-lg border border-slate-700 bg-slate-950 px-0 py-2 text-xs font-bold active:scale-[0.98]"
+                            className="flex-1 rounded-lg border border-slate-700 bg-slate-950 px-0 py-1.5 text-[10px] font-bold active:scale-[0.98] sm:py-2 sm:text-xs"
                           >
                             -
                           </button>
@@ -832,13 +874,15 @@ export default function EqualizerMicPage() {
                             max={MAX_DB}
                             step={0.5}
                             value={gain}
-                            onChange={(e) => updateEqBand(index, e.target.value)}
-                            className="w-[26px] rounded-lg border border-slate-700 bg-slate-950 px-0 py-2 text-center text-[10px] text-white outline-none"
+                            onChange={(e) =>
+                              updateEqBand(index, e.target.value)
+                            }
+                            className="w-[22px] rounded-lg border border-slate-700 bg-slate-950 px-0 py-1.5 text-center text-[9px] text-white outline-none sm:w-[24px] sm:py-2 sm:text-[10px]"
                           />
 
                           <button
                             onClick={() => stepEqBand(index, 0.5)}
-                            className="flex-1 rounded-lg border border-slate-700 bg-slate-950 px-0 py-2 text-xs font-bold active:scale-[0.98]"
+                            className="flex-1 rounded-lg border border-slate-700 bg-slate-950 px-0 py-1.5 text-[10px] font-bold active:scale-[0.98] sm:py-2 sm:text-xs"
                           >
                             +
                           </button>
@@ -853,98 +897,97 @@ export default function EqualizerMicPage() {
         </div>
       </div>
 
-<style jsx>{`
-  .touch-pan-x {
-    touch-action: pan-x;
-  }
+      <style jsx>{`
+        .touch-pan-x {
+          touch-action: pan-x;
+        }
 
-  .touch-slider {
-    touch-action: pan-x;
-  }
+        .touch-slider {
+          touch-action: pan-x;
+        }
 
-.eq-slider-vertical {
-  -webkit-appearance: none;
-  appearance: none;
-  writing-mode: vertical-lr;
-  direction: rtl;
-  width: 26px;
-  height: 100%;
-  min-height: 100%;
-  background: transparent;
-  cursor: pointer;
-  touch-action: none;
-  position: relative;
-  z-index: 20;
-}
+        .eq-slider-vertical {
+          -webkit-appearance: none;
+          appearance: none;
+          writing-mode: vertical-lr;
+          direction: rtl;
+          width: 16px;
+          height: 100%;
+          min-height: 100%;
+          background: transparent;
+          cursor: pointer;
+          touch-action: none;
+          position: relative;
+          z-index: 20;
+        }
 
-.eq-slider-vertical::-webkit-slider-runnable-track {
-  width: 6px;
-  background: transparent;
-  border-radius: 9999px;
-}
+        .eq-slider-vertical::-webkit-slider-runnable-track {
+          width: 4px;
+          background: transparent;
+          border-radius: 9999px;
+        }
 
-.eq-slider-vertical::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 9999px;
-  background: #f8fafc;
-  border: 2px solid #0f172a;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
-  cursor: pointer;
+        .eq-slider-vertical::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 14px;
+          height: 14px;
+          border-radius: 9999px;
+          background: #f8fafc;
+          border: 2px solid #0f172a;
+          box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+          cursor: pointer;
+          margin-left: -5px;
+        }
 
-  /* สำคัญ */
-  margin-left: -7px;
-}
+        .eq-slider-vertical::-moz-range-track {
+          width: 4px;
+          background: transparent;
+          border-radius: 9999px;
+        }
 
-.eq-slider-vertical::-moz-range-track {
-  width: 6px;
-  background: transparent;
-  border-radius: 9999px;
-}
+        .eq-slider-vertical::-moz-range-thumb {
+          width: 14px;
+          height: 14px;
+          border: 2px solid #0f172a;
+          border-radius: 9999px;
+          background: #f8fafc;
+          box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+          cursor: pointer;
+        }
 
-.eq-slider-vertical::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #0f172a;
-  border-radius: 9999px;
-  background: #f8fafc;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
-  cursor: pointer;
-}
-    .touch-slider::-webkit-slider-runnable-track {
-    height: 10px;
-    background: #334155;
-    border-radius: 9999px;
-  }
+        .touch-slider::-webkit-slider-runnable-track {
+          height: 10px;
+          background: #334155;
+          border-radius: 9999px;
+        }
 
-  .touch-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 24px;
-    height: 24px;
-    border-radius: 9999px;
-    background: #f8fafc;
-    margin-top: -7px;
-    cursor: pointer;
-  }
+        .touch-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 24px;
+          height: 24px;
+          border-radius: 9999px;
+          background: #f8fafc;
+          margin-top: -7px;
+          cursor: pointer;
+        }
 
-  .touch-slider::-moz-range-track {
-    height: 10px;
-    background: #334155;
-    border-radius: 9999px;
-  }
+        .touch-slider::-moz-range-track {
+          height: 10px;
+          background: #334155;
+          border-radius: 9999px;
+        }
 
-  .touch-slider::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
-    border: none;
-    border-radius: 9999px;
-    background: #f8fafc;
-    cursor: pointer;
-  }
-`}</style>
+        .touch-slider::-moz-range-thumb {
+          width: 24px;
+          height: 24px;
+          border: none;
+          border-radius: 9999px;
+          background: #f8fafc;
+          cursor: pointer;
+        }
+      `}</style>
     </div>
   );
 }
