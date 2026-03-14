@@ -48,16 +48,26 @@ function Section({ title, subtitle, children }) {
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      <InstallButton />
+
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
-        <div className="mb-6 rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-6">
-          <h1 className="text-2xl font-extrabold tracking-tight sm:text-4xl">
-            Audio Menu
-          </h1>
-          <p className="mt-2 text-sm text-slate-400 sm:text-base">
-            เลือกเครื่องมือที่ต้องการใช้งาน
-          </p>
-        </div>
+<div className="mb-6 rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-6">
+  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+
+    <div>
+      <h1 className="text-2xl font-extrabold tracking-tight sm:text-4xl">
+        Audio Menu
+      </h1>
+      <p className="mt-2 text-sm text-slate-400 sm:text-base">
+        เลือกเครื่องมือที่ต้องการใช้งาน
+      </p>
+    </div>
+
+    <div className="flex justify-end">
+      <InstallButton />
+    </div>
+
+  </div>
+</div>
 
         <div className="space-y-5">
           <Section

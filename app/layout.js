@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -16,7 +17,8 @@ export const metadata = {
     default: "Guitar tuner | ตั้งสายกีต้า",
     template: "%s | Guitar tuner | ตั้งสายกีต้า",
   },
-  description: "Guitar tuner - ตั้งสายกีต้า ไม่มีโฆษณา ใช้งานฟรี ติดตั้งเป็น PWA ได้",
+  description:
+    "Guitar tuner - ตั้งสายกีต้า ไม่มีโฆษณา ใช้งานฟรี ติดตั้งเป็น PWA ได้",
   keywords: [
     "Guitar tuner",
     "ตั้งสายกีต้า",
@@ -31,23 +33,22 @@ export const viewport = {
   themeColor: "#0f172a",
 };
 
-import Link from "next/link";
-
 export default function RootLayout({ children }) {
   return (
     <html lang="th">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-950`}
       >
-        {/* ปุ่มกลับหน้าหลัก */}
         <Link
           href="/"
-          className="fixed top-4 left-4 z-50 rounded-2xl border border-slate-700 bg-slate-900/90 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur active:scale-[0.97]"
+          className="fixed left-4 top-4 z-50 rounded-2xl border border-slate-700 bg-slate-900/90 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur active:scale-[0.97]"
         >
           ⬅ Home
         </Link>
 
-        {children}
+        <div className="pt-20">
+          {children}
+        </div>
       </body>
     </html>
   );
