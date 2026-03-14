@@ -31,10 +31,22 @@ export const viewport = {
   themeColor: "#0f172a",
 };
 
+import Link from "next/link";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="th">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {/* ปุ่มกลับหน้าหลัก */}
+        <Link
+          href="/"
+          className="fixed top-4 left-4 z-50 rounded-2xl border border-slate-700 bg-slate-900/90 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur active:scale-[0.97]"
+        >
+          ⬅ Home
+        </Link>
+
         {children}
       </body>
     </html>
