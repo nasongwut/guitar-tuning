@@ -1,2 +1,2 @@
-:HL["/guitar-tuning/_next/static/css/7cbe8c403beddc5c.css","style"]
-0:{"buildId":"biXUUpI6efX1RR5tG2S3p","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+:HL["/guitar-tuning/_next/static/css/54396cff40c5c293.css","style"]
+0:{"buildId":"cdQYiGzpuNoh6Q2G5O3Pi","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
